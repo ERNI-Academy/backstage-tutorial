@@ -1,19 +1,15 @@
 app:
-  # Should be the same as backend.baseUrl when using the `app-backend` plugin.
-  baseUrl: http://localhost:7007
+  baseUrl: https://${CUSTOM_DOMAIN}
+
+organization:
+  name: ERNI-Academy
 
 backend:
-  # Note that the baseUrl should be the URL that the browser and other clients
-  # should use when communicating with the backend, i.e. it needs to be
-  # reachable not just from within the backend host, but from all of your
-  # callers. When its value is "http://localhost:7007", it's strictly private
-  # and can't be reached by others.
-  baseUrl: http://localhost:7007
-  # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
-  # all interfaces, the most permissive setting. The right value depends on your specific deployment.
-  listen: ':7007'
-
-  # config options: https://node-postgres.com/api/client
+  baseUrl: https://${CUSTOM_DOMAIN}
+  listen:
+    port: 80
+  cors:
+    origin: https://${CUSTOM_DOMAIN}
   database:
     client: pg
     connection:
@@ -21,19 +17,38 @@ backend:
       port: ${POSTGRES_PORT}
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
-      # https://node-postgres.com/features/ssl
-      # you can set the sslmode configuration option via the `PGSSLMODE` environment variable
-      # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
-      # ssl:
-      #   ca: # if you have a CA file and want to verify it you can uncomment this section
-      #     $file: <file-path>/ca/server.crt
+      ssl: true
+
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
 
 auth:
+  environment: production
   providers:
-    guest: null
+    microsoft:
+      production:
+        clientId: ${AZURE_CLIENT_ID}
+        clientSecret: ${AZURE_CLIENT_SECRET}
+        tenantId: ${AZURE_TENANT_ID}
+        domainHint: ${AZURE_TENANT_ID}
+        additionalScopes:
+          - Mail.Send
+    github:
+      production:
+        clientId: ${GITHUB_ORG_OATH_CLIENT_ID}
+        clientSecret: ${GITHUB_ORG_OATH_CLIENT_SECRET}
+        ssl: true
+        signIn:
+          resolvers:
+            - resolver: usernameMatchingUserEntityName
 
-catalog:
-  # Overrides the default list locations from app-config.yaml as these contain example data.
-  # See https://backstage.io/docs/features/software-catalog/#adding-components-to-the-catalog for more details
-  # on how to get entities into the catalog.
-  locations: []
+techdocs:
+  builder: 'external'
+  publisher:
+    type: 'azureBlobStorage'
+    azureBlobStorage:
+      containerName: ${TECHDOCS_CONTAINER_NAME}
+      credentials:
+        accountName: ${TECHDOCS_STORAGE_ACCOUNT}
