@@ -9,7 +9,9 @@ backend:
   baseUrl: http://localhost:7007
   listen:
     port: 7007
-
+  auth:
+    keys:
+      - secret: '958100d8c2655b7f002d3a5e537351f71b6b2b8fa4e36f2af66d9ec595d7233d61e8feff20e56be968b3b081cc97a052df73fa7dc4a9f5e876fc00e9d34c9e1d'
   csp:
     connect-src: ["'self'", 'http:', 'https:']
 
