@@ -7,7 +7,6 @@
  */
 import {authModuleGithubProvider, authModuleMicrosoftProvider} from "./authProvidersExtension";
 import { createBackend } from '@backstage/backend-defaults';
-import {legacyPlugin} from "@backstage/backend-common";
 
 const backend = createBackend();
 
@@ -38,7 +37,5 @@ backend.add(import('@backstage/plugin-search-backend/alpha'));
 backend.add(import('@backstage/plugin-search-backend-module-catalog/alpha'));
 backend.add(import('@backstage/plugin-search-backend-module-techdocs/alpha'));
 
-// chatgpt
-backend.add(legacyPlugin('chatgpt', import('./plugins/chatgpt')));
 
 backend.start();
