@@ -29,14 +29,14 @@ import { Root } from './components/Root';
 
 import {
     AlertDisplay,
-    OAuthRequestDialog,
-    SignInPage, SignInProviderConfig,
+    OAuthRequestDialog
 } from '@backstage/core-components';
 import { createApp } from '@backstage/app-defaults';
 import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
+import {SignInPage, SignInProviderConfig,} from '@backstage/core-components';
 import {microsoftAuthApiRef} from "@backstage/core-plugin-api";
 
 const microsoftAuthProvider: SignInProviderConfig = {
@@ -47,6 +47,15 @@ const microsoftAuthProvider: SignInProviderConfig = {
 };
 
 const app = createApp({
+  components: {
+    SignInPage: props => (
+      <SignInPage
+        {...props}
+        auto
+        provider={microsoftAuthProvider}
+      />
+    ),
+  },
   apis,
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
@@ -64,15 +73,6 @@ const app = createApp({
     bind(orgPlugin.externalRoutes, {
       catalogIndex: catalogPlugin.routes.catalogIndex,
     });
-  },
-  components: {
-    SignInPage: props => (
-      <SignInPage
-        {...props}
-        auto
-        provider={microsoftAuthProvider}
-      />
-    ),
   },
 });
 
