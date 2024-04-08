@@ -5,7 +5,7 @@
  *
  * Happy hacking!
  */
-import {authModuleMicrosoftProvider} from "./msAuth";
+import {authModuleGithubProvider, authModuleMicrosoftProvider} from "./authProvidersExtension";
 
 import { createBackend } from '@backstage/backend-defaults';
 
@@ -19,7 +19,7 @@ backend.add(import('@backstage/plugin-techdocs-backend/alpha'));
 // auth plugin
 backend.add(import('@backstage/plugin-auth-backend'));
 backend.add(authModuleMicrosoftProvider);
-backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
+backend.add(authModuleGithubProvider);
 
 // catalog plugin
 backend.add(import('@backstage/plugin-catalog-backend/alpha'));

@@ -1,7 +1,12 @@
 import {createBackendModule} from "@backstage/backend-plugin-api";
-import {authProvidersExtensionPoint, createOAuthProviderFactory} from "@backstage/plugin-auth-node";
+import {
+    authProvidersExtensionPoint,
+    commonSignInResolvers,
+    createOAuthProviderFactory
+} from "@backstage/plugin-auth-node";
 import {microsoftAuthenticator} from "@backstage/plugin-auth-backend-module-microsoft-provider";
 import {DEFAULT_NAMESPACE, stringifyEntityRef} from "@backstage/catalog-model";
+import {githubAuthenticator, githubSignInResolvers} from "@backstage/plugin-auth-backend-module-github-provider";
 
 export const authModuleMicrosoftProvider = createBackendModule({
     pluginId: 'auth',
@@ -33,6 +38,30 @@ export const authModuleMicrosoftProvider = createBackendModule({
                                     ent: [userEntityRef],
                                 },
                             });
+                        },
+                    }),
+                });
+            },
+        });
+    },
+});
+
+export const authModuleGithubProvider = createBackendModule({
+    pluginId: 'auth',
+    moduleId: 'github-provider',
+    register(reg) {
+        reg.registerInit({
+            deps: {
+                providers: authProvidersExtensionPoint,
+            },
+            async init({ providers }) {
+                providers.registerProvider({
+                    providerId: 'github',
+                    factory: createOAuthProviderFactory({
+                        authenticator: githubAuthenticator,
+                        signInResolverFactories: {
+                            ...githubSignInResolvers,
+                            ...commonSignInResolvers,
                         },
                     }),
                 });
