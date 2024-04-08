@@ -38,6 +38,7 @@ import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import {SignInPage, SignInProviderConfig,} from '@backstage/core-components';
 import {microsoftAuthApiRef} from "@backstage/core-plugin-api";
+import {ChatGPTFrontendPage} from "@enfuse/chatgpt-plugin-frontend";
 
 const microsoftAuthProvider: SignInProviderConfig = {
     id: 'azure-auth-provider',
@@ -114,6 +115,7 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
+    <Route path="/chatgpt" element={<ChatGPTFrontendPage />} />
   </FlatRoutes>
 );
 
