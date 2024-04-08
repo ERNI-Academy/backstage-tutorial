@@ -2,9 +2,6 @@ app:
   title: Scaffolded Backstage App
   baseUrl: http://localhost:3000
 
-organization:
-  name: ERNI-Academy
-
 backend:
   baseUrl: http://localhost:7007
   listen:
@@ -19,11 +16,6 @@ backend:
     origin: http://localhost:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
-
-integrations:
-  github:
-    - host: github.com
-      token: ${GITHUB_TOKEN}
 
 proxy:
 
